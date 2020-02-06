@@ -33,7 +33,7 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
   let weatherInfo = {};
   try {
     weatherInfo = await result.json();
-    if (weatherInfo.cod === "404") {
+    if (weatherInfo.cod !== 200) {
       console.log("-> error", weatherInfo);
       // TODO: Improve UI to show this error in a better way than an alert
       window.alert(
