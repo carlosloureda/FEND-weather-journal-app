@@ -39,22 +39,19 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
       window.alert(
         `An error happened fething weather info: ${weatherInfo.message}`
       );
-      //cod: 200
-    } else {
-      console.log("Data fetched from openweathermap: ", weatherInfo);
     }
   } catch (error) {
     console.log("error", error);
   }
 
-  const _result2 = await saveData("/add-entry", {
+  const success = await saveData("/add-entry", {
     temperature: weatherInfo.main.temp,
     date: getTodaysDate(),
     feelings: document.getElementById("feelings").value
   });
-  console.log("_result2: ", _result2);
-
-  getUserDataAndUpdateUI();
+  if (success) {
+    getUserDataAndUpdateUI();
+  }
 };
 
 /**
@@ -67,7 +64,6 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
 const saveData = async (path, userData) => {
   // validate user data ? temperature, date, user response (feeling)
   const response = await fetch(path, {
-    // TODO: need to add something ?
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -121,8 +117,6 @@ const resetForm = () => {
  */
 const addSubmitButtonListener = () => {
   document.getElementById("generate").addEventListener("click", () => {
-    // As we are on client side the validation is done by disabling the submit
-    // button on the UI
     const zip = document.getElementById("zip").value;
     fetchWeatherInfo(WEATHER_API_BASE_URL, zip, API_KEY);
   });

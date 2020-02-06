@@ -64,7 +64,6 @@ app.post(
     };
     console.log("[/add-entry] endpoint called with: ", req.body);
     res.status(200).send("User entry properly saved");
-    // res.sendStatus(200);
   }
 );
 
