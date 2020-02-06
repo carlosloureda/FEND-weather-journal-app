@@ -1,3 +1,5 @@
+const secrets = require("./secrets.js");
+
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
 
@@ -21,6 +23,10 @@ app.use(cors());
 app.use(express.static("website"));
 
 // Setup Server
-
-const secrets = require("./secrets.js");
-console.log("WEATHER_API_KEY: ", secrets.WEATHER_API_KEY);
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server for weather app running on port: ${PORT}`);
+  console.log(
+    `Open http://localhost:${PORT}/ on your browser to see the app running`
+  );
+});
