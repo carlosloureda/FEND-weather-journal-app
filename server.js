@@ -22,6 +22,15 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static("website"));
 
+/* Routes */
+
+/**
+ * GET route for returning `projectsData` to the calling client.
+ */
+app.get("/entries", (req, res) => {
+  res.send(projectData);
+});
+
 // Setup Server
 const PORT = 3000;
 app.listen(PORT, () => {
