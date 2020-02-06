@@ -26,8 +26,8 @@ app.use(express.static("website"));
 /**
  * GET route for returning `projectsData` to the calling client.
  */
-app.get("/entries", (req, res) => {
-  res.send(projectData);
+app.get("/recent-entry", (req, res) => {
+  res.send(projectData["user-data"]);
 });
 
 /**

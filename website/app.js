@@ -53,8 +53,8 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
     feelings: document.getElementById("feelings").value
   });
   console.log("_result2: ", _result2);
-  // TODO: return true?
-  //   return weatherInfo;
+
+  getUserDataAndUpdateUI();
 };
 
 /**
@@ -78,6 +78,43 @@ const saveData = async (path, userData) => {
   return response && response.status === 200 ? true : false;
 };
 
+/**
+ * [Async] Queries our server to fetch the last entry for the current user and
+ * updates the UI with that retreived data.
+ */
+const getUserDataAndUpdateUI = async () => {
+  const result = await fetch(`/recent-entry`);
+  try {
+    const { temperature, date, feelings } = await result.json();
+    updateLatestEntriesUI(temperature, date, feelings);
+    resetForm();
+  } catch (error) {
+    console.log("error", error);
+    window.alert("Some unexpected error happened!");
+  }
+};
+
+/**
+ * Updates the user interface containing the latest entry
+ *
+ * @param {number} temperature - The temperature to set on the #temp field
+ * @param {string} date - The date to set on the #date field
+ * @param {string} feelings - The feelings to set on the #feelings field
+ */
+const updateLatestEntriesUI = (temperature, date, feelings) => {
+  document.getElementById("temp").innerHTML = temperature;
+  document.getElementById("date").innerHTML = date;
+  document.getElementById("content").innerHTML = feelings;
+};
+
+/**
+ * Resets the form UI so user has a clean state.
+ */
+const resetForm = () => {
+  document.getElementById("zip").value = "";
+  document.getElementById("feelings").value = "";
+  toggleSubmitButton();
+};
 /**
  * Event listener handler for linking the weather fetch API to the generate
  * submit button.
