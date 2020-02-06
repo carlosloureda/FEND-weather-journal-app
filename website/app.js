@@ -35,22 +35,22 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
     weatherInfo = await result.json();
     if (weatherInfo.cod !== 200) {
       console.log("-> error", weatherInfo);
-      // TODO: Improve UI to show this error in a better way than an alert
-      window.alert(
+      openErrorModal(
         `An error happened fething weather info: ${weatherInfo.message}`
       );
+    } else {
+      const success = await saveData("/add-entry", {
+        temperature: weatherInfo.main.temp,
+        date: getTodaysDate(),
+        feelings: document.getElementById("feelings").value
+      });
+      if (success) {
+        getUserDataAndUpdateUI();
+      }
     }
   } catch (error) {
     console.log("error", error);
-  }
-
-  const success = await saveData("/add-entry", {
-    temperature: weatherInfo.main.temp,
-    date: getTodaysDate(),
-    feelings: document.getElementById("feelings").value
-  });
-  if (success) {
-    getUserDataAndUpdateUI();
+    openErrorModal(`An unexpected error happened: ${error}`);
   }
 };
 
@@ -86,7 +86,7 @@ const getUserDataAndUpdateUI = async () => {
     resetForm();
   } catch (error) {
     console.log("error", error);
-    window.alert("Some unexpected error happened!");
+    openErrorModal("Some unexpected error happened!");
   }
 };
 
@@ -153,6 +153,37 @@ const toggleSubmitButton = () => {
     zipValue && feelingsValue ? false : true;
 };
 
+/**
+ * Hanlder for adding event listeners for closing modal window
+ */
+const errorModalHandler = () => {
+  let modal = document.getElementById("errorModal");
+  let span = document.querySelector(".modal-close");
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    document.getElementById("modal-body-content").innerHTML = "";
+    modal.style.display = "none";
+  };
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      document.getElementById("modal-body-content").innerHTML = "";
+      modal.style.display = "none";
+    }
+  };
+};
+
+/**
+ * Opens a modal for showing nicer error messages to the user
+ * @param {string} errorMessage - The message error to be displayed on the modal
+ * window
+ */
+const openErrorModal = errorMessage => {
+  let modal = document.getElementById("errorModal");
+  document.getElementById("modal-body-content").innerHTML = errorMessage;
+  modal.style.display = "block";
+};
+
 /* RUN Start up code */
 
 // We want to disable the generate button on startup
@@ -161,3 +192,4 @@ toggleSubmitButton();
 // Listeners && EventListeners
 addSubmitButtonHandlers();
 addSubmitButtonListener();
+errorModalHandler();
