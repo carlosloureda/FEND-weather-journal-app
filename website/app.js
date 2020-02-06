@@ -1,5 +1,5 @@
 /* Global Variables */
-// const WEATHER_API_BASE_URL = secrets.WEATHER_API_KEY;
+
 const WEATHER_API_BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 const API_KEY = "<ADD-YOUR-API-KEY-HERE>";
 // TODO: I don't have a mentor ... and I hate knowledge section
