@@ -98,6 +98,9 @@ const getUserDataAndUpdateUI = async () => {
  * @param {string} feelings - The feelings to set on the #feelings field
  */
 const updateLatestEntriesUI = (temperature, date, feelings) => {
+  temperature = `Todays' temperature is ${temperature} ºF`;
+  date = `Todays' date: ${date}`;
+  feelings = `Your mood is: ${feelings}`;
   document.getElementById("temp").innerHTML = temperature;
   document.getElementById("date").innerHTML = date;
   document.getElementById("content").innerHTML = feelings;
