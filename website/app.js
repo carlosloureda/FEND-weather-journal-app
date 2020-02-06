@@ -2,9 +2,17 @@
 // const WEATHER_API_BASE_URL = secrets.WEATHER_API_KEY;
 const WEATHER_API_BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 const API_KEY = "<ADD-YOUR-API-KEY-HERE>";
-
 // TODO: I don't have a mentor ... and I hate knowledge section
 const COUNTRY_CODE = "es";
+
+/**
+ * Creates a new date instance dynamically with JS
+ * @returns {string} newDate - Date in format m.d.yyyy
+ */
+const getTodaysDate = () => {
+  let d = new Date();
+  return d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
+};
 
 /**
  * [Async] Fetches todays' weather from a given weather API (passed as an
@@ -28,7 +36,6 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
     if (weatherInfo.cod === "404") {
       console.log("-> error", weatherInfo);
       // TODO: Improve UI to show this error in a better way than an alert
-      //   TODO: Show some example on how to use the app
       window.alert(
         `An error happened fething weather info: ${weatherInfo.message}`
       );
@@ -39,7 +46,36 @@ const fetchWeatherInfo = async (baseUrl, zip, apiKey) => {
   } catch (error) {
     console.log("error", error);
   }
-  return weatherInfo;
+
+  const _result2 = await saveData("/add-entry", {
+    temperature: weatherInfo.main.temp,
+    date: getTodaysDate(),
+    feelings: document.getElementById("feelings").value
+  });
+  console.log("_result2: ", _result2);
+  // TODO: return true?
+  //   return weatherInfo;
+};
+
+/**
+ * [Async] Saves the user data on our server
+ *
+ * @param {string} path - Path for the server endpoint to save the data.
+ * @param {object} userData - The user data to be saved. With this schema:
+ *                          {temperature: number, date: string, feeling: string}
+ */
+const saveData = async (path, userData) => {
+  // validate user data ? temperature, date, user response (feeling)
+  const response = await fetch(path, {
+    // TODO: need to add something ?
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(userData) // body data type must match "Content-Type" header
+  });
+  return response && response.status === 200 ? true : false;
 };
 
 /**
@@ -82,10 +118,6 @@ const toggleSubmitButton = () => {
   document.getElementById("generate").disabled =
     zipValue && feelingsValue ? false : true;
 };
-
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
 
 /* RUN Start up code */
 

@@ -36,7 +36,7 @@ app.get("/entries", (req, res) => {
  * This route needs to receive 3 params in the body:
  * - temperature - {Number} :
  * - date - {Number}
- * - mood - {String} :
+ * - feelings - {String} :
  *
  * If the client sends a request without the proper fields this route will
  * answer with a 422 response and send the errors.
@@ -45,9 +45,8 @@ app.post(
   "/add-entry",
   [
     check("temperature").isNumeric(),
-    // TODO: check if we can set it to int or timestamp isRFC3339, isISO8601 for dates
-    check("date").isNumeric(),
-    check("mood").isString()
+    check("date").isString(), // TODO: Add custom validator for this
+    check("feelings").isString()
   ],
   (req, res) => {
     // Validate data
@@ -56,12 +55,12 @@ app.post(
       return res.status(422).json({ errors: errors.array() });
     }
     // Save data into projectData
-    const { temperature, date, mood } = req.body;
+    const { temperature, date, feelings } = req.body;
 
     projectData["user-data"] = {
       temperature,
       date,
-      mood
+      feelings
     };
     console.log("[/add-entry] endpoint called with: ", req.body);
     res.status(200).send("User entry properly saved");
