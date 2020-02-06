@@ -1,6 +1,4 @@
 const { check, validationResult } = require("express-validator");
-const secrets = require("./secrets.js");
-
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
 

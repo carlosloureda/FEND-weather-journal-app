@@ -57,7 +57,7 @@ input {
   border: none;
 }
 
-button {
+button.generate {
   width: 400px;
   height: 100px;
   background: #3b4a6b;
@@ -66,6 +66,23 @@ button {
   font-family: "Oswald", sans-serif;
   border: none;
   box-shadow: 2px 4px 5px #444;
+  cursor: pointer;
+}
+
+button.generate:hover {
+  background: #19202e;
+  color: #f5e37a;
+}
+button.generate:active {
+  background: #19202e;
+  color: #f5e37a;
+  transform: translateY(4px);
+}
+
+button.generate:disabled {
+  background-color: #777777;
+  color: white;
+  cursor: default;
 }
 h1 {
   font-size: 36px;

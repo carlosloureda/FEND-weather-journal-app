@@ -16,7 +16,13 @@ Make sure you have the following dependencies installed:
 
 `Node.js`
 
-**Steup && Start Server**
+- You need to create an API_KEY on your own from [https://openweathermap.org/](https://openweathermap.org/) and go to `/website/app.js` and add it to the `API_KEY`:
+
+```
+const API_KEY = "<ADD-YOUR-API-KEY-HERE>";
+```
+
+**Setup && Start Server**
 
 ```js
 // install dependencies:
@@ -24,8 +30,7 @@ npm install // or yarn install
 node server.js
 ```
 
-**App**
-Open `./website/index.html` in your preferred browser.
+Open `http://localhost:3000/` in your preferred browser.
 
 ## Support
 
