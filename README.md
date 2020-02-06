@@ -30,6 +30,8 @@ npm install // or yarn install
 node server.js
 ```
 
+> As of now you need to set your `COUNTRY_CODE` in the `app.js` file to make the app work outside of the default country (Spain)
+
 Open `http://localhost:3000/` in your preferred browser.
 
 ## Support
