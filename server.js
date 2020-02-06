@@ -1,3 +1,4 @@
+const { check, validationResult } = require("express-validator");
 const secrets = require("./secrets.js");
 
 // Setup empty JS object to act as endpoint for all routes
@@ -30,6 +31,45 @@ app.use(express.static("website"));
 app.get("/entries", (req, res) => {
   res.send(projectData);
 });
+
+/**
+ * Post route: Adds incoming data into the projectData.
+ *
+ * This route needs to receive 3 params in the body:
+ * - temperature - {Number} :
+ * - date - {Number}
+ * - mood - {String} :
+ *
+ * If the client sends a request without the proper fields this route will
+ * answer with a 422 response and send the errors.
+ */
+app.post(
+  "/add-entry",
+  [
+    check("temperature").isNumeric(),
+    // TODO: check if we can set it to int or timestamp isRFC3339, isISO8601 for dates
+    check("date").isNumeric(),
+    check("mood").isString()
+  ],
+  (req, res) => {
+    // Validate data
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    // Save data into projectData
+    const { temperature, date, mood } = req.body;
+
+    projectData["user-data"] = {
+      temperature,
+      date,
+      mood
+    };
+    console.log("[/add-entry] endpoint called with: ", req.body);
+    res.status(200).send("User entry properly saved");
+    // res.sendStatus(200);
+  }
+);
 
 // Setup Server
 const PORT = 3000;
