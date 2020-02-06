@@ -27,6 +27,10 @@ app.use(express.static("website"));
  * GET route for returning `projectsData` to the calling client.
  */
 app.get("/recent-entry", (req, res) => {
+  console.log(
+    "[/recent-entry] endpoint called, returning: ",
+    projectData["user-data"]
+  );
   res.send(projectData["user-data"]);
 });
 
